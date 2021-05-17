@@ -16,7 +16,7 @@ be thrown if no proxy is found in `process.env`, but also has options to not thr
 which can be useful when developing other node utilities using this library.
 
 **Note:** `http_proxy` and `HTTP_PROXY` take precedence over `https_proxy` and `HTTPS_PROXY`.
-If you would like to change this behavior it can be specified in the [options](#options)
+If you would like to change this behavior it can be specified in the [options](#options).
 
 ## Install
 
@@ -66,9 +66,9 @@ const client = addProxyToClient(client, { throwOnNoProxy: false });
 
 #### client
 
-Type: `string`
+Type: `Object`
 
-Lorem ipsum.
+Any client from [@aws-sdk](https://github.com/aws/aws-sdk-js-v3).
 
 #### options
 
