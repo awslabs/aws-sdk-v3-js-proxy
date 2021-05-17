@@ -13,7 +13,7 @@ export const addProxyToClient = <T>(
   {
     debug = false,
     httpsOnly = false,
-    noProxyException = true,
+    throwOnNoProxy = true,
   }: AddProxyOptions = {}
 ): T => {
   const httpProxy = getHttpProxy();
@@ -37,9 +37,9 @@ export const addProxyToClient = <T>(
     client.config.requestHandler = new NodeHttpHandler({
       httpsAgent: new ProxyAgent(httpsProxy),
     });
-  } else if (noProxyException) {
+  } else if (throwOnNoProxy) {
     log(
-      'No proxy found in env, and noProxyException is set to true, throwing error'
+      'No proxy found in env, and throwOnNoProxy is set to true, throwing error'
     );
     throw new Error(
       'Unable to add proxy to AWS SDK client. No proxy found in process.env'

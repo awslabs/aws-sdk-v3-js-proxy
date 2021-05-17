@@ -56,7 +56,7 @@ const client = addProxyToClient(client);
 import { S3Client } from '@aws-sdk/client-s3';
 import { addProxyToClient } from 'aws-sdk-v3-proxy';
 
-const client = addProxyToClient(client, { noProxyException: false });
+const client = addProxyToClient(client, { throwOnNoProxy: false });
 // `client` has no proxy assigned and no error thrown
 ```
 
@@ -74,7 +74,7 @@ Lorem ipsum.
 
 Type: `object`
 
-##### noProxyException
+##### throwOnNoProxy
 
 Type: `boolean`
 Default: `true`

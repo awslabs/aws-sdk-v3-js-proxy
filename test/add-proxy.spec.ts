@@ -46,9 +46,9 @@ describe('add-proxy', () => {
       expect(fn).toThrowError(error);
     });
 
-    it('should not throw when no proxy is found on env and noProxyException is false', () => {
+    it('should not throw when no proxy is found on env and throwOnNoProxy is false', () => {
       const opts: AddProxyOptions = {
-        noProxyException: false,
+        throwOnNoProxy: false,
       };
 
       const fn = () => addProxyToClient(client, opts);

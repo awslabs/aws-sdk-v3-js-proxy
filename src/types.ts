@@ -19,7 +19,7 @@ export interface AddProxyOptions {
    *
    * @default true
    */
-  noProxyException?: boolean;
+  throwOnNoProxy?: boolean;
   /**
    * Toggles logging
    *
