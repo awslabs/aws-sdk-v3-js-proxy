@@ -1,24 +1,4 @@
-# typescript-npm-package-template
-
-> Template to kickstart creating a Node.js module using TypeScript and VSCode
-
-Inspired by [node-module-boilerplate](https://github.com/sindresorhus/node-module-boilerplate)
-
-## Getting started
-
-**Click the "Use this template" button.**
-
-Alternatively, create a new directory and then run:
-
-```bash
-curl -fsSL https://github.com/ryansonshine/typescript-npm-package-template/archive/main.tar.gz | tar -xz --strip-components=1
-```
-
-**Remove everything from here and above**
-
----
-
-# my-package-name
+# AWS SDK v3 Proxy
 
 [![npm package][npm-img]][npm-url]
 [![Build Status][build-img]][build-url]
@@ -28,28 +8,63 @@ curl -fsSL https://github.com/ryansonshine/typescript-npm-package-template/archi
 [![Commitizen Friendly][commitizen-img]][commitizen-url]
 [![Semantic Release][semantic-release-img]][semantic-release-url]
 
-> My awesome module
+> A wrapper for adding proxy support to [AWS SDK v3](https://github.com/aws/aws-sdk-js-v3) clients
+
+This wrapper adds a proxy configuration to AWS SDK clients by checking environment
+variables and attaching the necessary request handler. By default, an error will
+be thrown if no proxy is found in `process.env`, but also has options to not throw
+which can be useful when developing other node utilities using this library.
+
+**Note:** `http_proxy` and `HTTP_PROXY` take precedence over `https_proxy` and `HTTPS_PROXY`.
+If you would like to change this behavior it can be specified in the [options](#options)
 
 ## Install
 
 ```bash
-npm install my-package-name
+npm install aws-sdk-v3-proxy
 ```
 
 ## Usage
 
-```ts
-import { myPackage } from 'my-package-name';
+### HTTP Proxy
 
-myPackage('hello');
-//=> 'hello from my package'
+```ts
+// process.env.HTTP_PROXY = 'http://127.0.0.1'
+import { S3Client } from '@aws-sdk/client-s3';
+import { addProxyToClient } from 'aws-sdk-v3-proxy';
+
+const client = addProxyToClient(client);
+// `client` now has HTTP proxy config at 'http://127.0.0.1'
+```
+
+### HTTPS Proxy
+
+```ts
+// process.env.HTTPS_PROXY = 'https://127.0.0.1'
+import { S3Client } from '@aws-sdk/client-s3';
+import { addProxyToClient } from 'aws-sdk-v3-proxy';
+
+const client = addProxyToClient(client);
+// `client` now has HTTPS proxy config at 'https://127.0.0.1'
+```
+
+### No Proxy with exception disabled
+
+```ts
+// process.env.HTTPS_PROXY = undefined
+// process.env.HTTP_PROXY = undefined
+import { S3Client } from '@aws-sdk/client-s3';
+import { addProxyToClient } from 'aws-sdk-v3-proxy';
+
+const client = addProxyToClient(client, { noProxyException: false });
+// `client` has no proxy assigned and no error thrown
 ```
 
 ## API
 
-### myPackage(input, options?)
+### addProxyToClient(client, options?)
 
-#### input
+#### client
 
 Type: `string`
 
@@ -59,23 +74,37 @@ Lorem ipsum.
 
 Type: `object`
 
-##### postfix
+##### noProxyException
 
-Type: `string`
-Default: `rainbows`
+Type: `boolean`
+Default: `true`
 
-Lorem ipsum.
+Throw an error if no proxy is found in the environment.
 
-[build-img]:https://github.com/ryansonshine/typescript-npm-package-template/actions/workflows/release.yml/badge.svg
-[build-url]:https://github.com/ryansonshine/typescript-npm-package-template/actions/workflows/release.yml
-[downloads-img]:https://img.shields.io/npm/dt/typescript-npm-package-template
-[downloads-url]:https://www.npmtrends.com/typescript-npm-package-template
-[npm-img]:https://img.shields.io/npm/v/typescript-npm-package-template
-[npm-url]:https://www.npmjs.com/package/typescript-npm-package-template
-[issues-img]:https://img.shields.io/github/issues/ryansonshine/typescript-npm-package-template
-[issues-url]:https://github.com/ryansonshine/typescript-npm-package-template/issues
-[codecov-img]:https://codecov.io/gh/ryansonshine/typescript-npm-package-template/branch/main/graph/badge.svg
-[codecov-url]:https://codecov.io/gh/ryansonshine/typescript-npm-package-template
+##### httpsOnly
+
+Type: `boolean`
+Default: `false`
+
+Can be specified in cases where you have both http_proxy and https_proxy set, and would like to override the default behavior of the http_proxy taking precedence.
+
+##### debug
+
+Type: `boolean`
+Default: `false`
+
+Toggles additional logging for debugging.
+
+[build-img]:https://github.com/ryansonshine/aws-sdk-v3-proxy/actions/workflows/release.yml/badge.svg
+[build-url]:https://github.com/ryansonshine/aws-sdk-v3-proxy/actions/workflows/release.yml
+[downloads-img]:https://img.shields.io/npm/dt/aws-sdk-v3-proxy
+[downloads-url]:https://www.npmtrends.com/aws-sdk-v3-proxy
+[npm-img]:https://img.shields.io/npm/v/aws-sdk-v3-proxy
+[npm-url]:https://www.npmjs.com/package/aws-sdk-v3-proxy
+[issues-img]:https://img.shields.io/github/issues/ryansonshine/aws-sdk-v3-proxy
+[issues-url]:https://github.com/ryansonshine/aws-sdk-v3-proxy/issues
+[codecov-img]:https://codecov.io/gh/ryansonshine/aws-sdk-v3-proxy/branch/main/graph/badge.svg
+[codecov-url]:https://codecov.io/gh/ryansonshine/aws-sdk-v3-proxy
 [semantic-release-img]:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]:https://github.com/semantic-release/semantic-release
 [commitizen-img]:https://img.shields.io/badge/commitizen-friendly-brightgreen.svg

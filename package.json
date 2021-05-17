@@ -1,7 +1,7 @@
 {
-  "name": "typescript-npm-package-template",
+  "name": "aws-sdk-v3-proxy",
   "version": "0.0.0-development",
-  "description": "A template for creating npm packages using TypeScript and VSCode",
+  "description": "A wrapper for adding proxy support to AWS SDK v3 clients",
   "main": "./lib/src/index.js",
   "files": [
     "lib/**/*"
@@ -14,14 +14,13 @@
     "lint": "eslint ./src/ --fix",
     "prepare": "husky install",
     "semantic-release": "semantic-release",
-    "start": "TS_NODE_FILES=true ts-node ./src/cli.ts",
     "test:watch": "jest --watch",
     "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryansonshine/typescript-npm-package-template.git"
+    "url": "git+https://github.com/ryansonshine/aws-sdk-v3-proxy.git"
   },
   "license": "MIT",
   "author": {
@@ -33,22 +32,23 @@
     "node": ">=10.0"
   },
   "keywords": [
-    "boilerplate",
-    "template",
-    "typescript",
-    "vscode",
-    "jest",
-    "husky",
-    "commitizen",
-    "semantic-release",
-    "codecov"
+    "aws-sdk",
+    "aws-sdk-v3",
+    "proxy",
+    "proxy-agent"
   ],
   "bugs": {
-    "url": "https://github.com/ryansonshine/typescript-npm-package-template/issues"
+    "url": "https://github.com/ryansonshine/aws-sdk-v3-proxy/issues"
   },
-  "homepage": "https://github.com/ryansonshine/typescript-npm-package-template#readme",
-  "dependencies": {},
+  "homepage": "https://github.com/ryansonshine/aws-sdk-v3-proxy#readme",
+  "dependencies": {
+    "@aws-sdk/node-http-handler": "^3.15.0",
+    "@aws-sdk/protocol-http": "^3.15.0",
+    "proxy-agent": "^4.0.1"
+  },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.16.0",
+    "@aws-sdk/types": "^3.15.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.20.11",
     "@typescript-eslint/eslint-plugin": "^4.22.0",

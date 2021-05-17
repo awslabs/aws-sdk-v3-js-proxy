@@ -1,1 +1,1 @@
-export const myPackage = (taco: string): string => `${taco} from my package`;
+export { addProxyToClient } from './add-proxy';
