@@ -22,7 +22,7 @@ export const addProxyToClient = <T>(
 
   if (httpProxy && httpsProxy && !httpsOnly) {
     console.warn(
-      'Both HTTP and HTTPS proxy found in enviornment, defaulting to HTTP\n' +
+      'Both HTTP and HTTPS proxy found in environment, defaulting to HTTP\n' +
         'To use the HTTPS proxy instead, set the `httpsOnly` option to `true`'
     );
   }
