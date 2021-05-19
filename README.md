@@ -33,7 +33,7 @@ npm install aws-sdk-v3-proxy
 import { S3Client } from '@aws-sdk/client-s3';
 import { addProxyToClient } from 'aws-sdk-v3-proxy';
 
-const client = addProxyToClient(client);
+const client = addProxyToClient(new S3Client({}));
 // `client` now has HTTP proxy config at 'http://127.0.0.1'
 ```
 
@@ -44,7 +44,7 @@ const client = addProxyToClient(client);
 import { S3Client } from '@aws-sdk/client-s3';
 import { addProxyToClient } from 'aws-sdk-v3-proxy';
 
-const client = addProxyToClient(client);
+const client = addProxyToClient(new S3Client({}));
 // `client` now has HTTPS proxy config at 'https://127.0.0.1'
 ```
 
@@ -56,7 +56,7 @@ const client = addProxyToClient(client);
 import { S3Client } from '@aws-sdk/client-s3';
 import { addProxyToClient } from 'aws-sdk-v3-proxy';
 
-const client = addProxyToClient(client, { throwOnNoProxy: false });
+const client = addProxyToClient(new S3Client({}), { throwOnNoProxy: false });
 // `client` has no proxy assigned and no error thrown
 ```
 
