@@ -42,9 +42,11 @@
   },
   "homepage": "https://github.com/ryansonshine/aws-sdk-v3-proxy#readme",
   "dependencies": {
-    "@aws-sdk/node-http-handler": "^3.15.0",
-    "@aws-sdk/protocol-http": "^3.15.0",
     "proxy-agent": "^4.0.1"
+  },
+  "peerDependencies": {
+    "@aws-sdk/node-http-handler": "^3.15.0",
+    "@aws-sdk/protocol-http": "^3.15.0"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.16.0",
