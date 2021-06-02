@@ -20,9 +20,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryansonshine/aws-sdk-v3-proxy.git"
+    "url": "git+https://github.com/awslabs/aws-sdk-v3-js-proxy.git"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": {
     "name": "Ryan Sonshine",
     "email": "ryansonshine@users.noreply.github.com",
@@ -38,9 +38,9 @@
     "proxy-agent"
   ],
   "bugs": {
-    "url": "https://github.com/ryansonshine/aws-sdk-v3-proxy/issues"
+    "url": "https://github.com/awslabs/aws-sdk-v3-js-proxy/issues"
   },
-  "homepage": "https://github.com/ryansonshine/aws-sdk-v3-proxy#readme",
+  "homepage": "https://github.com/awslabs/aws-sdk-v3-js-proxy#readme",
   "dependencies": {
     "proxy-agent": "^4.0.1"
   },

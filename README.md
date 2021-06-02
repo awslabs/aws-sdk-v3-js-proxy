@@ -95,16 +95,24 @@ Default: `false`
 
 Toggles additional logging for debugging.
 
-[build-img]:https://github.com/ryansonshine/aws-sdk-v3-proxy/actions/workflows/release.yml/badge.svg
-[build-url]:https://github.com/ryansonshine/aws-sdk-v3-proxy/actions/workflows/release.yml
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This project is licensed under the Apache-2.0 License.
+
+[build-img]:https://github.com/awslabs/aws-sdk-v3-js-proxy/actions/workflows/release.yml/badge.svg
+[build-url]:https://github.com/awslabs/aws-sdk-v3-js-proxy/actions/workflows/release.yml
 [downloads-img]:https://img.shields.io/npm/dt/aws-sdk-v3-proxy
 [downloads-url]:https://www.npmtrends.com/aws-sdk-v3-proxy
 [npm-img]:https://img.shields.io/npm/v/aws-sdk-v3-proxy
 [npm-url]:https://www.npmjs.com/package/aws-sdk-v3-proxy
-[issues-img]:https://img.shields.io/github/issues/ryansonshine/aws-sdk-v3-proxy
-[issues-url]:https://github.com/ryansonshine/aws-sdk-v3-proxy/issues
-[codecov-img]:https://codecov.io/gh/ryansonshine/aws-sdk-v3-proxy/branch/main/graph/badge.svg
-[codecov-url]:https://codecov.io/gh/ryansonshine/aws-sdk-v3-proxy
+[issues-img]:https://img.shields.io/github/issues/awslabs/aws-sdk-v3-js-proxy
+[issues-url]:https://github.com/awslabs/aws-sdk-v3-js-proxy/issues
+[codecov-img]:https://codecov.io/gh/awslabs/aws-sdk-v3-js-proxy/branch/main/graph/badge.svg
+[codecov-url]:https://codecov.io/gh/awslabs/aws-sdk-v3-js-proxy
 [semantic-release-img]:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]:https://github.com/semantic-release/semantic-release
 [commitizen-img]:https://img.shields.io/badge/commitizen-friendly-brightgreen.svg
