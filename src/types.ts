@@ -1,3 +1,4 @@
+import { NodeHttpHandlerOptions } from '@aws-sdk/node-http-handler';
 import type { HttpHandler } from '@aws-sdk/protocol-http';
 
 type ConfigWithRequestHandler = {
@@ -13,7 +14,8 @@ export type ClientWithConfig<T> = T extends ConfigWithRequestHandler
 /**
  * Set of options that can be passed to `addProxyToClient`
  */
-export interface AddProxyOptions {
+export interface AddProxyOptions
+  extends Pick<NodeHttpHandlerOptions, 'connectionTimeout' | 'socketTimeout'> {
   /**
    * Throw an error if no proxy is found in the environment.
    *

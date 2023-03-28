@@ -11,7 +11,6 @@ const MockNodeHttpHandler = mocked(NodeHttpHandler);
 describe('add-proxy', () => {
   describe('addProxyToClient', () => {
     let client: S3Client;
-    let warnSpy = jest.spyOn(global.console, 'warn');
     let logSpy = jest.spyOn(global.console, 'log');
     const PREV_ENV = process.env;
 
@@ -21,7 +20,6 @@ describe('add-proxy', () => {
       client = new S3Client({
         region: 'us-east-1',
       });
-      warnSpy = jest.spyOn(global.console, 'warn');
       logSpy = jest.spyOn(global.console, 'log');
     });
 
@@ -56,6 +54,18 @@ describe('add-proxy', () => {
       expect(fn).not.toThrow();
     });
 
+    it('should attach an httpAgent AND httpsAgent when both proxies are set', () => {
+      process.env.HTTP_PROXY = 'http://localhost';
+      process.env.HTTPS_PROXY = 'https://localhost';
+
+      addProxyToClient(client);
+
+      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
+        httpAgent: new ProxyAgent('http://localhost'),
+        httpsAgent: new ProxyAgent('https://localhost'),
+      });
+    });
+
     it('should attach an httpAgent as the requestHandler when an http proxy is set', () => {
       process.env.HTTP_PROXY = 'http://localhost';
 
@@ -63,6 +73,7 @@ describe('add-proxy', () => {
 
       expect(MockNodeHttpHandler).toHaveBeenCalledWith({
         httpAgent: new ProxyAgent('http://localhost'),
+        httpsAgent: new ProxyAgent('http://localhost'),
       });
     });
 
@@ -72,21 +83,8 @@ describe('add-proxy', () => {
       addProxyToClient(client);
 
       expect(MockNodeHttpHandler).toHaveBeenCalledWith({
+        httpAgent: new ProxyAgent('https://localhost'),
         httpsAgent: new ProxyAgent('https://localhost'),
-      });
-    });
-
-    it('should use http proxy if both proxies are found but httpsOnly is false', () => {
-      const opts: AddProxyOptions = {
-        httpsOnly: false,
-      };
-      process.env.HTTPS_PROXY = 'https://localhost';
-      process.env.HTTP_PROXY = 'http://localhost';
-
-      addProxyToClient(client, opts);
-
-      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
-        httpAgent: new ProxyAgent('http://localhost'),
       });
     });
 
@@ -101,6 +99,7 @@ describe('add-proxy', () => {
 
       expect(MockNodeHttpHandler).toHaveBeenCalledWith({
         httpsAgent: new ProxyAgent('https://localhost'),
+        httpAgent: new ProxyAgent('https://localhost'),
       });
     });
 
@@ -114,19 +113,8 @@ describe('add-proxy', () => {
 
       expect(MockNodeHttpHandler).toHaveBeenCalledWith({
         httpsAgent: new ProxyAgent('https://localhost'),
+        httpAgent: new ProxyAgent('https://localhost'),
       });
-    });
-
-    it('should log a warning when both http and https proxy are set and httpsOnly is false', () => {
-      const opts: AddProxyOptions = {
-        httpsOnly: false,
-      };
-      process.env.HTTPS_PROXY = 'https://localhost';
-      process.env.HTTP_PROXY = 'http://localhost';
-
-      addProxyToClient(client, opts);
-
-      expect(warnSpy).toHaveBeenCalled();
     });
 
     it('should print to the console when debug is set to true', () => {
@@ -149,6 +137,32 @@ describe('add-proxy', () => {
       addProxyToClient(client, opts);
 
       expect(logSpy).not.toHaveBeenCalled();
+    });
+
+    it('should add connectionTimeout when provided', () => {
+      const opts: AddProxyOptions = {
+        connectionTimeout: 100,
+      };
+      process.env.HTTP_PROXY = 'http://localhost';
+
+      addProxyToClient(client, opts);
+
+      expect(MockNodeHttpHandler).toHaveBeenCalledWith(
+        expect.objectContaining(opts)
+      );
+    });
+
+    it('should add socketTimeout when provided', () => {
+      const opts: AddProxyOptions = {
+        socketTimeout: 10,
+      };
+      process.env.HTTP_PROXY = 'http://localhost';
+
+      addProxyToClient(client, opts);
+
+      expect(MockNodeHttpHandler).toHaveBeenCalledWith(
+        expect.objectContaining(opts)
+      );
     });
   });
 });

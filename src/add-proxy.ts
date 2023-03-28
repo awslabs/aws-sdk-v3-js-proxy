@@ -14,28 +14,52 @@ export const addProxyToClient = <T>(
     debug = false,
     httpsOnly = false,
     throwOnNoProxy = true,
+    ...opts
   }: AddProxyOptions = {}
 ): T => {
   const httpProxy = getHttpProxy();
   const httpsProxy = getHttpsProxy();
+  const httpAgent = httpProxy ? new ProxyAgent(httpProxy) : undefined;
+  const httpsAgent = httpsProxy ? new ProxyAgent(httpsProxy) : undefined;
   const log = debug ? console.log : () => null;
 
-  if (httpProxy && httpsProxy && !httpsOnly) {
-    console.warn(
-      'Both HTTP and HTTPS proxy found in environment, defaulting to HTTP\n\n' +
-        'To use the HTTPS proxy instead, set the `httpsOnly` option to `true`'
-    );
+  if (httpProxy && httpsProxy) {
+    if (httpsOnly) {
+      log(
+        `Setting https proxy to ${httpsProxy} (httpsOnly enabled with both https and http found in env)`
+      );
+      client.config.requestHandler = new NodeHttpHandler({
+        httpAgent: httpsAgent,
+        httpsAgent,
+        ...opts,
+      });
+    } else {
+      log(
+        `Setting http proxy to ${httpProxy} and https proxy to ${httpsProxy}`
+      );
+      client.config.requestHandler = new NodeHttpHandler({
+        httpAgent,
+        httpsAgent,
+        ...opts,
+      });
+    }
+
+    return client;
   }
 
   if (httpProxy && !httpsOnly) {
     log(`Setting http proxy to ${httpProxy}`);
     client.config.requestHandler = new NodeHttpHandler({
-      httpAgent: new ProxyAgent(httpProxy),
+      httpAgent,
+      httpsAgent: httpAgent,
+      ...opts,
     });
   } else if (httpsProxy) {
     log(`Setting https proxy to ${httpsProxy}`);
     client.config.requestHandler = new NodeHttpHandler({
-      httpsAgent: new ProxyAgent(httpsProxy),
+      httpAgent: httpsAgent,
+      httpsAgent,
+      ...opts,
     });
   } else if (throwOnNoProxy) {
     log(
