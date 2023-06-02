@@ -1,5 +1,5 @@
 import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
-import ProxyAgent from 'proxy-agent';
+import { HttpsProxyAgent } from 'hpagent';
 import { AddProxyOptions, ClientWithConfig } from './types';
 
 export const getHttpProxy = (): string =>
@@ -14,13 +14,18 @@ export const addProxyToClient = <T>(
     debug = false,
     httpsOnly = false,
     throwOnNoProxy = true,
+    agentOptions = {},
     ...opts
   }: AddProxyOptions = {}
 ): T => {
   const httpProxy = getHttpProxy();
   const httpsProxy = getHttpsProxy();
-  const httpAgent = httpProxy ? new ProxyAgent(httpProxy) : undefined;
-  const httpsAgent = httpsProxy ? new ProxyAgent(httpsProxy) : undefined;
+  const httpAgent = httpProxy
+    ? new HttpsProxyAgent({ proxy: httpProxy, ...agentOptions })
+    : undefined;
+  const httpsAgent = httpsProxy
+    ? new HttpsProxyAgent({ proxy: httpsProxy, ...agentOptions })
+    : undefined;
   const log = debug ? console.log : () => null;
 
   if (httpProxy && httpsProxy) {

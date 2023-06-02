@@ -1,5 +1,6 @@
-import { NodeHttpHandlerOptions } from '@aws-sdk/node-http-handler';
+import type { NodeHttpHandlerOptions } from '@aws-sdk/node-http-handler';
 import type { HttpHandler } from '@aws-sdk/protocol-http';
+import type { HttpsProxyAgentOptions } from 'hpagent';
 
 type ConfigWithRequestHandler = {
   config: {
@@ -36,4 +37,8 @@ export interface AddProxyOptions
    * @default false
    */
   httpsOnly?: boolean;
+  /**
+   * Options to be provided to the proxy agent. This can be used for modifyi
+   */
+  agentOptions?: Partial<HttpsProxyAgentOptions>;
 }
