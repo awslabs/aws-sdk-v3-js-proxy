@@ -69,7 +69,7 @@ import { addProxyToClient } from 'aws-sdk-v3-proxy';
 
 const client = addProxyToClient(new S3Client({}), {
   agentOptions: {
-    proxyRequestOptions: { ca: [fs.readFileSync('custom-proxy-cert.pem').toString()] },
+    ca: [fs.readFileSync('custom-proxy-cert.pem').toString()],
   },
 });
 
