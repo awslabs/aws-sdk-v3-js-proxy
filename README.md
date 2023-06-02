@@ -64,12 +64,13 @@ const client = addProxyToClient(new S3Client({}), { throwOnNoProxy: false });
 
 ```ts
 // process.env.HTTPS_PROXY = 'https://127.0.0.1'
+import { readFileSync } from 'fs';
 import { S3Client } from '@aws-sdk/client-s3';
 import { addProxyToClient } from 'aws-sdk-v3-proxy';
 
 const client = addProxyToClient(new S3Client({}), {
   agentOptions: {
-    ca: [fs.readFileSync('custom-proxy-cert.pem').toString()],
+    ca: [readFileSync('custom-proxy-cert.pem').toString()],
   },
 });
 
