@@ -60,6 +60,22 @@ const client = addProxyToClient(new S3Client({}), { throwOnNoProxy: false });
 // `client` has no proxy assigned and no error thrown
 ```
 
+### Proxy with certs in header
+
+```ts
+// process.env.HTTPS_PROXY = 'https://127.0.0.1'
+import { S3Client } from '@aws-sdk/client-s3';
+import { addProxyToClient } from 'aws-sdk-v3-proxy';
+
+const client = addProxyToClient(new S3Client({}), {
+  agentOptions: {
+    proxyRequestOptions: { ca: [fs.readFileSync('custom-proxy-cert.pem').toString()] },
+  },
+});
+
+// `client` now has HTTPS proxy config at 'https://127.0.0.1' with ca `custom-proxy-cert.pem`
+```
+
 ## API
 
 ### addProxyToClient(client, options?)
@@ -95,6 +111,12 @@ Default: `false`
 
 Toggles additional logging for debugging.
 
+##### agentOptions
+
+Type: `HttpsProxyAgentOptions`
+
+Used to pass specific options to the proxy agent.
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
@@ -102,7 +124,6 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 ## License
 
 This project is licensed under the Apache-2.0 License.
-
 
 [build-img]:https://github.com/awslabs/aws-sdk-v3-js-proxy/actions/workflows/release.yml/badge.svg
 [build-url]:https://github.com/awslabs/aws-sdk-v3-js-proxy/actions/workflows/release.yml

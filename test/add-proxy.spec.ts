@@ -1,17 +1,18 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { mocked } from 'ts-jest/utils';
-import ProxyAgent from 'proxy-agent';
+import * as hpagent from 'hpagent';
 import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
 import { addProxyToClient } from '../src';
 import { AddProxyOptions } from '../src/types';
 jest.mock('@aws-sdk/node-http-handler');
+jest.mock('hpagent');
 
-const MockNodeHttpHandler = mocked(NodeHttpHandler);
+const MockNodeHttpHandler = jest.mocked(NodeHttpHandler);
 
 describe('add-proxy', () => {
   describe('addProxyToClient', () => {
     let client: S3Client;
     let logSpy = jest.spyOn(global.console, 'log');
+    let proxyAgentSpy = jest.spyOn(hpagent, 'HttpsProxyAgent');
     const PREV_ENV = process.env;
 
     beforeEach(() => {
@@ -21,6 +22,7 @@ describe('add-proxy', () => {
         region: 'us-east-1',
       });
       logSpy = jest.spyOn(global.console, 'log');
+      proxyAgentSpy = jest.spyOn(hpagent, 'HttpsProxyAgent');
     });
 
     afterEach(() => {
@@ -60,9 +62,11 @@ describe('add-proxy', () => {
 
       addProxyToClient(client);
 
-      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
-        httpAgent: new ProxyAgent('http://localhost'),
-        httpsAgent: new ProxyAgent('https://localhost'),
+      expect(proxyAgentSpy).toHaveBeenNthCalledWith(1, {
+        proxy: 'http://localhost',
+      });
+      expect(proxyAgentSpy).toHaveBeenNthCalledWith(2, {
+        proxy: 'https://localhost',
       });
     });
 
@@ -71,9 +75,9 @@ describe('add-proxy', () => {
 
       addProxyToClient(client);
 
-      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
-        httpAgent: new ProxyAgent('http://localhost'),
-        httpsAgent: new ProxyAgent('http://localhost'),
+      expect(proxyAgentSpy).toHaveBeenCalledTimes(1);
+      expect(proxyAgentSpy).toHaveBeenCalledWith({
+        proxy: 'http://localhost',
       });
     });
 
@@ -82,9 +86,9 @@ describe('add-proxy', () => {
 
       addProxyToClient(client);
 
-      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
-        httpAgent: new ProxyAgent('https://localhost'),
-        httpsAgent: new ProxyAgent('https://localhost'),
+      expect(proxyAgentSpy).toHaveBeenCalledTimes(1);
+      expect(proxyAgentSpy).toHaveBeenCalledWith({
+        proxy: 'https://localhost',
       });
     });
 
@@ -97,9 +101,9 @@ describe('add-proxy', () => {
 
       addProxyToClient(client, opts);
 
-      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
-        httpsAgent: new ProxyAgent('https://localhost'),
-        httpAgent: new ProxyAgent('https://localhost'),
+      expect(proxyAgentSpy).toHaveBeenCalledTimes(2);
+      expect(proxyAgentSpy).toHaveBeenCalledWith({
+        proxy: 'https://localhost',
       });
     });
 
@@ -111,10 +115,28 @@ describe('add-proxy', () => {
 
       addProxyToClient(client, opts);
 
-      expect(MockNodeHttpHandler).toHaveBeenCalledWith({
-        httpsAgent: new ProxyAgent('https://localhost'),
-        httpAgent: new ProxyAgent('https://localhost'),
+      expect(proxyAgentSpy).toHaveBeenCalledTimes(1);
+      expect(proxyAgentSpy).toHaveBeenCalledWith({
+        proxy: 'https://localhost',
       });
+    });
+
+    it('should pass additional agent options to the proxy agent', () => {
+      const agentOptions: hpagent.HttpsProxyAgentOptions = {
+        keepAlive: true,
+        keepAliveMsecs: 1000,
+        maxSockets: 256,
+        maxFreeSockets: 256,
+        proxy: 'https://localhost:8080',
+        proxyRequestOptions: {
+          ca: ['sample-cert'],
+        },
+      };
+      process.env.http_proxy = 'http://localhost';
+
+      addProxyToClient(client, { agentOptions });
+
+      expect(proxyAgentSpy).toHaveBeenCalledWith(agentOptions);
     });
 
     it('should print to the console when debug is set to true', () => {
