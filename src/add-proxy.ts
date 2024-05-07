@@ -1,4 +1,4 @@
-import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 import { HttpsProxyAgent } from 'hpagent';
 import { AddProxyOptions, ClientWithConfig } from './types';
 
