@@ -41,8 +41,8 @@
   },
   "homepage": "https://github.com/awslabs/aws-sdk-v3-js-proxy#readme",
   "dependencies": {
-    "@aws-sdk/node-http-handler": "^3.53.0",
-    "@aws-sdk/protocol-http": "^3.296.0",
+    "@smithy/node-http-handler": "^2.5.0",
+    "@smithy/protocol-http": "^3.3.0",
     "hpagent": "^1.2.0"
   },
   "devDependencies": {
