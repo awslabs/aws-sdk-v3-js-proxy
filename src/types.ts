@@ -1,10 +1,10 @@
+import { HttpHandlerOptions, RequestHandler } from '@aws-sdk/types';
 import type { NodeHttpHandlerOptions } from '@smithy/node-http-handler';
-import type { HttpHandler } from '@smithy/protocol-http';
 import type { HttpsProxyAgentOptions } from 'hpagent';
 
 type ConfigWithRequestHandler = {
   config: {
-    requestHandler: HttpHandler;
+    requestHandler: RequestHandler<any, any, HttpHandlerOptions>;
   };
 };
 
