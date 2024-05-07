@@ -1,5 +1,5 @@
-import type { NodeHttpHandlerOptions } from '@aws-sdk/node-http-handler';
-import type { HttpHandler } from '@aws-sdk/protocol-http';
+import type { NodeHttpHandlerOptions } from '@smithy/node-http-handler';
+import type { HttpHandler } from '@smithy/protocol-http';
 import type { HttpsProxyAgentOptions } from 'hpagent';
 
 type ConfigWithRequestHandler = {
