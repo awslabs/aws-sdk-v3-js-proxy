@@ -15,11 +15,11 @@ export const addProxyToClient = <T>(
     httpsOnly = false,
     throwOnNoProxy = true,
     agentOptions = {},
+    httpProxy = getHttpProxy(),
+    httpsProxy = getHttpsProxy(),
     ...opts
   }: AddProxyOptions = {}
 ): T => {
-  const httpProxy = getHttpProxy();
-  const httpsProxy = getHttpsProxy();
   const httpAgent = httpProxy
     ? new HttpsProxyAgent({ proxy: httpProxy, ...agentOptions })
     : undefined;

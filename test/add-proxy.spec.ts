@@ -186,5 +186,21 @@ describe('add-proxy', () => {
         expect.objectContaining(opts)
       );
     });
+
+    it('should attach an httpAgent AND httpsAgent when both proxies are set by options', () => {
+      const opts: AddProxyOptions = {
+        httpProxy: 'http://localhost',
+        httpsProxy: 'https://localhost',
+      };
+
+      addProxyToClient(client, opts);
+
+      expect(proxyAgentSpy).toHaveBeenNthCalledWith(1, {
+        proxy: 'http://localhost',
+      });
+      expect(proxyAgentSpy).toHaveBeenNthCalledWith(2, {
+        proxy: 'https://localhost',
+      });
+    });
   });
 });
