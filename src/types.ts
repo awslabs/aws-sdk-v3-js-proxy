@@ -38,6 +38,16 @@ export interface AddProxyOptions
    */
   httpsOnly?: boolean;
   /**
+   * The URL for the HTTP proxy server.
+   * If not specified, the value of `process.env.http_proxy` or `process.env.HTTP_RPOXY` will be used.
+   */
+  httpProxy?: string;
+  /**
+   * The URL for the HTTPS proxy server.
+   * If not specified, the value of `process.env.https_proxy` or `process.env.HTTPS_RPOXY` will be used.
+   */
+  httpsProxy?: string;
+  /**
    * Options to be provided to the proxy agent. This can be used for modifyi
    */
   agentOptions?: Partial<HttpsProxyAgentOptions>;
